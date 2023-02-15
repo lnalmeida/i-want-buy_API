@@ -17,6 +17,13 @@
       "applicationUrl": "https://localhost:7141;http://localhost:5134",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "Kestrel": {
+        "httpsPort": 5001,
+        "ssl": {
+          "certPath": "localhost.crt",
+          "keyPath": "localhost.key"
+        }
       }
     },
     "IIS Express": {

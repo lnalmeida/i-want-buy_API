@@ -15,14 +15,24 @@ public static class CategoryPost
 
     private static IResult Action(CategoryRequest categoryRequest, ApplicationDBContext context)
     {
-        var category = new Category
+        try
         {
-            Name = categoryRequest.Name
-        };
+            var category = new Category(categoryRequest.Name, "User", "User");
 
-        context.Categories.Add((category));
-        context.SaveChanges();
+            if (!category.IsValid)
+            {
+                return Results.ValidationProblem(category.Notifications.ConvertToProblemDetails());
+            }
 
-        return Results.Created($"/Categories/{category.Id}", category.Id);
+            context.Categories.Add((category));
+            context.SaveChanges();
+
+            return Results.Created($"/Categories/{category.Id}", category.Id);
+        }
+        catch (ApplicationException)
+        {
+
+            return Results.Problem("A server error has occurred, please contact the administrator.");
+        }
     }
 }

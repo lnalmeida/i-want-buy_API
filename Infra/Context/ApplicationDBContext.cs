@@ -2,12 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Flunt.Notifications;
 using i_want_buy.Domain.Products;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace i_want_buy.Infra.Context
 {
-    public class ApplicationDBContext : DbContext
+    public class ApplicationDBContext : IdentityDbContext<IdentityUser>
     {
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
@@ -16,6 +19,7 @@ namespace i_want_buy.Infra.Context
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Ignore<Notification>();
             builder.Entity<Product>()
                    .Property(p => p.Name)
                    .IsRequired();
